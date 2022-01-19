@@ -146,6 +146,7 @@ public extension PP where Base: UIView {
     func setBadge(height: CGFloat) {
         base.badgeView.layer.cornerRadius = height * 0.5
         base.badgeView.heightConstraint()?.constant = height
+        base.badgeView.minWidth = height
         moveBadge(x: base.badgeView.offset.x, y: base.badgeView.offset.y)
     }
     

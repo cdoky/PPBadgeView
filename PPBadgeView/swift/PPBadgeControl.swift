@@ -34,6 +34,18 @@ open class PPBadgeControl: UIControl {
     
     private var badgeViewColor: UIColor?
     private var badgeViewHeightConstraint: NSLayoutConstraint?
+    private var mTxtLabelWidthCtt: NSLayoutConstraint!
+    var minWidth: CGFloat = 0 {
+        didSet {
+            self.mTxtLabelWidthCtt?.isActive = false
+            if #available(iOS 9.0, *) {
+                self.mTxtLabelWidthCtt = self.textLabel.widthAnchor.constraint(greaterThanOrEqualToConstant: self.minWidth)
+            } else {
+                self.mTxtLabelWidthCtt = NSLayoutConstraint(item: textLabel, attribute: .width, relatedBy: .greaterThanOrEqual, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: minWidth)
+            }
+            self.mTxtLabelWidthCtt.isActive = true
+        }
+    }
     
     public class func `default`() -> Self {
         return self.init(frame: .zero)
@@ -109,7 +121,8 @@ open class PPBadgeControl: UIControl {
         addSubview(textLabel)
         addSubview(imageView)
         addLayout(with: imageView, leading: 0, trailing: 0)
-        addLayout(with: textLabel, leading: 5, trailing: -5)
+        addLayout(with: textLabel, leading: 0, trailing: 0)
+        self.minWidth = 0
     }
     
     private func addLayout(with view: UIView, leading: CGFloat, trailing: CGFloat) {
